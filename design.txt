@@ -1,0 +1,12 @@
+Lab06 game design:
+
+	- Car racing game
+	- Keyboard controls
+	- Racetrack?
+	- Audio?
+	- Animation?
+		- Speeding up and slowing down.
+		- Drifting?
+		- Day/night - headlights & brake/tail lights
+	- Pick-ups?
+	- Score?
