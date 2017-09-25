@@ -1,1 +1,8 @@
-// JavaScript source code
+
+function setup() {
+
+}
+
+function update() {
+
+}
