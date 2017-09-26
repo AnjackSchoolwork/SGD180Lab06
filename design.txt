@@ -10,3 +10,10 @@ Lab06 game design:
 		- Day/night - headlights & brake/tail lights
 	- Pick-ups?
 	- Score?
+
+UI:
+
+	- Player avatar is a car in the "middle" of the play area
+	- Racetrack moves past the player, car remains in relative area
+	- Higher speed moves car toward the top of the play area (and vise versa)
+	- Left and right controls will angle the car sprite and move it toward the corresponding edge of the play area
