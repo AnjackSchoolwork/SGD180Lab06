@@ -3,18 +3,19 @@
 		- Build method to load all images prior to starting game
 */
 
+drag = -1
+
 modes = {}
 modes.inMenu = 0
 modes.inLevel = 1
 modes.exiting = 2
 
 player = {}
-player.speed = 0
 player.maxSpeed = 100
 player.acceleration = 5
 player.deceleration = -20
-player.leftAngle = -45
-player.rightAngle = 45
+player.leftAngle = -20
+player.rightAngle = 20
 player.startX = 400
 player.startY = 300
 
@@ -43,7 +44,7 @@ function loadConfig() {
 }
 
 function initializeEntity(scene, image, w, h, x, y, angle, speed) {
-	console.log(angle)
+	console.log(x)
 
 	if (angle == null)
 		angle = 0
@@ -58,6 +59,7 @@ function initializeEntity(scene, image, w, h, x, y, angle, speed) {
 		y = scene.height / 2
 
 	var tempSprite = new Sprite(scene, image, w, h)
+	tempSprite.setPosition(x, y)
 	tempSprite.setAngle(angle)
 	tempSprite.setSpeed(speed)
 	
@@ -69,30 +71,33 @@ function setPlayerVector2d() {
 
 	if (keysDown[K_UP]) {
 		// increase speed
-		if (player.speed < player.maxSpeed) {
-			player.speed += player.acceleration
+		if (player.sprite.speed < player.maxSpeed) {
+			player.sprite.changeSpeedBy(player.acceleration)
 		}
 	}
 
 	if (keysDown[K_DOWN]) {
 		// reduce speed
-		if (player.speed > 0) {
-			player.speed -= player.deceleration
+		if (player.sprite.speed > 0) {
+			player.sprite.changeSpeedBy(player.deceleration)
 		}
 	}
-
-	player.sprite.setAngle(0)
+	
 
 	if (keysDown[K_LEFT]) {
 		// steer left
-		player.sprite.setAngle(player.leftAngle)
+		if(player.sprite.speed > 0)
+			player.sprite.changeAngleBy(player.leftAngle)
 	}
 
 	if (keysDown[K_RIGHT]) {
 		// steer right
-		player.sprite.setAngle(player.rightAngle)
+		if(player.sprite.speed > 0)
+			player.sprite.changeAngleBy(player.rightAngle)
 	}
 
 	if (player.sprite.speed < 0)
 		player.sprite.setSpeed(0)
+	else if (player.sprite.speed > 0)
+		player.sprite.changeSpeedBy(drag)
 }
