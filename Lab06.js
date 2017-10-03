@@ -14,8 +14,7 @@ player = {}
 player.maxSpeed = 100
 player.acceleration = 5
 player.deceleration = -20
-player.leftAngle = -20
-player.rightAngle = 20
+player.turnRadius = 5
 player.startX = 400
 player.startY = 300
 
@@ -24,7 +23,7 @@ function setup() {
 	gameMode = modes.inLevel
 	scene = new Scene()
 
-	player.sprite = initializeEntity(scene, 'img/player_car_small.png', 128, 64, player.startX, player.startY, 0, player.speed)
+	player.sprite = initializeEntity(scene, 'img/player_car_small_long.png', 192, 64, player.startX, player.startY, 0, player.speed)
 
 	scene.start()
 }
@@ -78,26 +77,38 @@ function setPlayerVector2d() {
 
 	if (keysDown[K_DOWN]) {
 		// reduce speed
-		if (player.sprite.speed > 0) {
-			player.sprite.changeSpeedBy(player.deceleration)
+		if (player.sprite.speed > 0 - player.maxSpeed / 2) {
+			if (player.sprite.speed > 0) {
+				player.sprite.changeSpeedBy(player.deceleration)
+			}
+			else {
+				player.sprite.changeSpeedBy(-player.acceleration)
+			}
 		}
 	}
 	
-
 	if (keysDown[K_LEFT]) {
 		// steer left
-		if(player.sprite.speed > 0)
-			player.sprite.changeAngleBy(player.leftAngle)
+		if(player.sprite.speed != 0)
+			player.sprite.changeAngleBy(-player.turnRadius)
 	}
 
 	if (keysDown[K_RIGHT]) {
 		// steer right
-		if(player.sprite.speed > 0)
-			player.sprite.changeAngleBy(player.rightAngle)
+		if(player.sprite.speed != 0)
+			player.sprite.changeAngleBy(player.turnRadius)
 	}
 
-	if (player.sprite.speed < 0)
+	// This gets a little jittery. Commenting it out until I figure out the fix.
+	//if (keysDown[K_SPACE]) {
+	//	if (player.sprite.speed <= player.deceleration * 2.5 && player.sprite.speed >= player.deceleration * -2.5)
+	//		player.sprite.setSpeed(0)
+	//	else if (player.sprite.speed != 0)
+	//		player.sprite.changeSpeedBy(player.deceleration * 2 * (player.sprite.speed / Math.abs(player.sprite.speed)))
+	//}
+
+	if (player.sprite.speed < player.acceleration && player.sprite.speed > 0 - player.acceleration)
 		player.sprite.setSpeed(0)
-	else if (player.sprite.speed > 0)
-		player.sprite.changeSpeedBy(drag)
+	else if (player.sprite.speed != 0)
+		player.sprite.changeSpeedBy(drag * (player.sprite.speed / Math.abs(player.sprite.speed)))
 }
